@@ -1,24 +1,18 @@
 import axios from "axios";
 import type { PixabayResponse } from "./types/pixabay";
+import { PER_PAGE } from "./pagination";
 
-const API_KEY = "54237990-a39483862806b592bbf8509f4";
-const BASE_URL = "https://pixabay.com/api/";
-
-export async function getImagesByQuery(
-  query: string,
-  page: number
-): Promise<PixabayResponse> {
-  const response = await axios.get<PixabayResponse>(BASE_URL, {
+export const getImagesByQuery = async (query: string, page: number): Promise<PixabayResponse> => {
+  const response = await axios.get<PixabayResponse>(`https://pixabay.com/api/`, {
     params: {
-      key: API_KEY,
       q: query,
+      page,
+      per_page: PER_PAGE,
       image_type: "photo",
       orientation: "horizontal",
       safesearch: true,
-      page,
-      per_page: 20,
+      key: import.meta.env.VITE_PIXABAY_API_KEY,
     },
   });
-
   return response.data;
-}
+};
