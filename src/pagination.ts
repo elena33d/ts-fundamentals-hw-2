@@ -1,25 +1,26 @@
-import { PER_PAGE } from "./pixabay-api"; // если хочешь брать значение из api-файла
+export const PER_PAGE: number = 15;
 
 export default class Pagination {
-  private readonly perPage: number;
-  private page: number;
+
+  private readonly perPage: number; 
+  private page: number;             
 
   constructor(perPage: number = PER_PAGE) {
     this.perPage = perPage;
     this.page = 1;
   }
 
-  // геттер для чтения текущей страницы
   get current(): number {
     return this.page;
   }
 
-  next(): void {
-    this.page += 1;
-  }
-
   reset(): void {
     this.page = 1;
+  }
+
+  next(): number {
+    this.page += 1;
+    return this.page;
   }
 
   isEnd(totalHits: number): boolean {
