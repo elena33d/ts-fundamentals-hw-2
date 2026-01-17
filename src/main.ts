@@ -4,10 +4,10 @@ import Pagination from "./pagination";
 
 const pagination = new Pagination();
 let query = "";
-const searchForm = document.querySelector(".form");
-const loadMoreButton = document.querySelector(".load-more");
-const gallery = document.querySelector(".gallery");
-const loader = document.querySelector(".loader");
+const searchForm = document.querySelector<HTMLFormElement>(".form");
+const loadMoreButton = document.querySelector<HTMLButtonElement>(".load-more");
+const gallery = document.querySelector<HTMLDivElement>(".gallery");
+const loader = document.querySelector<HTMLDivElement>(".loader");
 
 if (!searchForm) throw new Error("Missing .form element in HTML");
 if (!loadMoreButton) throw new Error("Missing .load-more element in HTML");
@@ -20,11 +20,12 @@ const ui = initRender({ gallery, loader, loadMoreButton });
 searchForm.addEventListener("submit", onFormSubmit);
 loadMoreButton.addEventListener("click", onLoadMoreClick);
 
-async function onFormSubmit(event) {
+async function onFormSubmit(event: SubmitEvent) {
   event.preventDefault();
-  const form = event.target;
+
+  const form = event.target as HTMLFormElement;
   const formData = new FormData(form);
-  query = formData.get("search-text").trim();
+  query = String(formData.get("search-text")).trim();
 
   if (query === "") {
     ui.showToast("Please enter a search query.");
@@ -37,14 +38,13 @@ async function onFormSubmit(event) {
   await fetchAndRender();
   form.reset();
 }
+}
 
-async function onLoadMoreClick() {
-  pagination.next();
+async function onLoadMoreClick(_event: MouseEvent) {  pagination.next();
   await fetchAndRender();
 }
 
-async function fetchAndRender() {
-  const isInitial = pagination.current === 1;
+async function fetchAndRender(): Promise<void> {  const isInitial = pagination.current === 1;
   try {
     ui.showLoader();
     ui.hideLoadMoreButton();
