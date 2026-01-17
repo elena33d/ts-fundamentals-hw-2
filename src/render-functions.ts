@@ -1,18 +1,14 @@
 import iziToast from "izitoast";
 import SimpleLightbox from "simplelightbox";
-import type { PixabayImage } from "./types/pixabay";
-import "izitoast/dist/css/iziToast.min.css";
-import "simplelightbox/dist/simple-lightbox.min.css";
+import type { PixabayImage } from './types/pixabay';
 
-// типы, которые принимает initRender
-type RenderElements = {
+export type RenderElements = {
   gallery: HTMLDivElement;
   loader: HTMLDivElement;
   loadMoreButton: HTMLButtonElement;
 };
 
-// тип возвращаемого объекта
-type RenderAPI = {
+export type RenderAPI = {
   createGallery: (images: PixabayImage[]) => void;
   clearGallery: () => void;
   showLoader: () => void;
@@ -25,7 +21,6 @@ type RenderAPI = {
 export function initRender(elements: RenderElements): RenderAPI {
   const { gallery, loader, loadMoreButton } = elements;
 
-  // initial UI state
   loader.style.display = "none";
   loadMoreButton.style.display = "none";
 
@@ -55,37 +50,12 @@ export function initRender(elements: RenderElements): RenderAPI {
     lightbox.refresh();
   };
 
-  const clearGallery = () => {
-    gallery.innerHTML = "";
-  };
+  const clearGallery = () => { gallery.innerHTML = ""; };
+  const showLoader = () => { loader.style.display = "block"; };
+  const hideLoader = () => { loader.style.display = "none"; };
+  const showLoadMoreButton = () => { loadMoreButton.style.display = "block"; };
+  const hideLoadMoreButton = () => { loadMoreButton.style.display = "none"; };
+  const showToast = (text: string) => { iziToast.info({ message: text, position: "topRight" }); };
 
-  const showLoader = () => {
-    loader.style.display = "block";
-  };
-
-  const hideLoader = () => {
-    loader.style.display = "none";
-  };
-
-  const showLoadMoreButton = () => {
-    loadMoreButton.style.display = "block";
-  };
-
-  const hideLoadMoreButton = () => {
-    loadMoreButton.style.display = "none";
-  };
-
-  const showToast = (text: string) => {
-    iziToast.info({ message: text, position: "topRight" });
-  };
-
-  return {
-    createGallery,
-    clearGallery,
-    showLoader,
-    hideLoader,
-    showLoadMoreButton,
-    hideLoadMoreButton,
-    showToast,
-  };
+  return { createGallery, clearGallery, showLoader, hideLoader, showLoadMoreButton, hideLoadMoreButton, showToast };
 }
