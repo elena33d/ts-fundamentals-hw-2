@@ -1,27 +1,26 @@
 export const PER_PAGE = 15;
 
 export default class Pagination {
-  // perPage and page must be private to prevent external modification
-  constructor(perPage = PER_PAGE) {
+  current: number;  // текущая страница
+  perPage: number;  // сколько элементов на страницу
+  totalHits: number; // всего элементов
+
+  constructor(perPage: number = 20) {
+    this.current = 1;
     this.perPage = perPage;
-    this.page = 1;
+    this.totalHits = 0;
   }
 
-  get current() {
-    return this.page;
+  next(): void {
+    this.current += 1;
   }
 
-  reset() {
-    this.page = 1;
+  reset(): void {
+    this.current = 1;
   }
 
-  next() {
-    this.page += 1;
-    return this.page;
-  }
-
-  // Returns true when we've reached or passed the last page based on totalHits
-  isEnd(totalHits) {
-    return this.page * this.perPage >= totalHits;
+  isEnd(totalHits: number): boolean {
+    this.totalHits = totalHits;
+    return this.current * this.perPage >= totalHits;
   }
 }
