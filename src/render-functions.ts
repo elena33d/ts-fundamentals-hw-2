@@ -1,5 +1,5 @@
 import iziToast from "izitoast";
-import SimpleLightbox from "simplelightbox";
+import SimpleLightbox from "simplelightbox"; 
 import type { PixabayImage } from './types/pixabay';
 
 export type RenderElements = {
@@ -47,7 +47,7 @@ export function initRender(elements: RenderElements): RenderAPI {
       .join("");
 
     gallery.insertAdjacentHTML("beforeend", galleryItems);
-    lightbox.refresh();
+    lightbox.refresh(); 
   };
 
   const clearGallery = () => { gallery.innerHTML = ""; };
