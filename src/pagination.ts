@@ -1,26 +1,25 @@
 export const PER_PAGE = 15;
 
-export default class Pagination {
-  current: number;  // текущая страница
-  perPage: number;  // сколько элементов на страницу
-  totalHits: number; // всего элементов
+import axios from "axios";
 
-  constructor(perPage: number = 20) {
-    this.current = 1;
-    this.perPage = perPage;
-    this.totalHits = 0;
-  }
+export interface Image {
+  id: number;
+  webformatURL: string;
+  largeImageURL: string;
+  tags: string;
+}
 
-  next(): void {
-    this.current += 1;
-  }
+export interface ApiResponse {
+  hits: Image[];
+  totalHits: number;
+}
 
-  reset(): void {
-    this.current = 1;
-  }
-
-  isEnd(totalHits: number): boolean {
-    this.totalHits = totalHits;
-    return this.current * this.perPage >= totalHits;
-  }
+export async function getImagesByQuery(
+  query: string,
+  page: number
+): Promise<ApiResponse> {
+  const response = await axios.get<ApiResponse>(
+    `https://pixabay.com/api/?q=${query}&page=${page}`
+  );
+  return response.data;
 }
