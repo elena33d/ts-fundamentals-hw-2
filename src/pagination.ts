@@ -1,25 +1,28 @@
-export const PER_PAGE = 15;
+import { PER_PAGE } from "./pixabay-api"; // если хочешь брать значение из api-файла
 
-import axios from "axios";
+export default class Pagination {
+  private readonly perPage: number;
+  private page: number;
 
-export interface Image {
-  id: number;
-  webformatURL: string;
-  largeImageURL: string;
-  tags: string;
-}
+  constructor(perPage: number = PER_PAGE) {
+    this.perPage = perPage;
+    this.page = 1;
+  }
 
-export interface ApiResponse {
-  hits: Image[];
-  totalHits: number;
-}
+  // геттер для чтения текущей страницы
+  get current(): number {
+    return this.page;
+  }
 
-export async function getImagesByQuery(
-  query: string,
-  page: number
-): Promise<ApiResponse> {
-  const response = await axios.get<ApiResponse>(
-    `https://pixabay.com/api/?q=${query}&page=${page}`
-  );
-  return response.data;
+  next(): void {
+    this.page += 1;
+  }
+
+  reset(): void {
+    this.page = 1;
+  }
+
+  isEnd(totalHits: number): boolean {
+    return this.page * this.perPage >= totalHits;
+  }
 }
