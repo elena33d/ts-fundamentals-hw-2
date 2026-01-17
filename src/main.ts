@@ -25,7 +25,9 @@ async function onFormSubmit(event: SubmitEvent) {
 
   const form = event.target as HTMLFormElement;
   const formData = new FormData(form);
-  query = String(formData.get("search-text")).trim();
+  const value = formData.get("search-text"); // FormDataEntryValue | null
+
+  query = value instanceof String ? value.trim() : String(value).trim();
 
   if (query === "") {
     ui.showToast("Please enter a search query.");
