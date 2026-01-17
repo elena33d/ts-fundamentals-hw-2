@@ -1,8 +1,8 @@
 import axios from "axios";
 import type { PixabayResponse } from "./types/pixabay";
 
-// Твой ключ API — желательно хранить в .env, но можно пока так
-const API_KEY = "ВАШ_API_KEY";
+// Твой API ключ, который тебе выдали
+const API_KEY = "54237990-a39483862806b592bbf8509f4";
 const BASE_URL = "https://pixabay.com/api/";
 
 export async function getImagesByQuery(
@@ -11,13 +11,13 @@ export async function getImagesByQuery(
 ): Promise<PixabayResponse> {
   const response = await axios.get<PixabayResponse>(BASE_URL, {
     params: {
-      key: API_KEY,
-      q: query,
-      image_type: "photo",
+      key: API_KEY,         // ← здесь используем твой ключ
+      q: query,             // поисковый запрос
+      image_type: "photo",  // тип изображения
       orientation: "horizontal",
       safesearch: true,
-      page,
-      per_page: 20,
+      page,                 // страница
+      per_page: 20,         // сколько изображений за раз
     },
   });
 
