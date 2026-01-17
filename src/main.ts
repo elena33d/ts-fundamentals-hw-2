@@ -27,7 +27,8 @@ async function onFormSubmit(event: SubmitEvent) {
   const formData = new FormData(form);
   const value = formData.get("search-text"); // FormDataEntryValue | null
 
-  query = value instanceof String ? value.trim() : String(value).trim();
+  // value может быть null, приводим к string
+  query = value instanceof File ? "" : String(value).trim();
 
   if (query === "") {
     ui.showToast("Please enter a search query.");
