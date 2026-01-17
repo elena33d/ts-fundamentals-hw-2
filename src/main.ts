@@ -14,8 +14,15 @@ if (!loadMoreButton) throw new Error("Missing .load-more element in HTML");
 if (!gallery) throw new Error("Missing .gallery element in HTML");
 if (!loader) throw new Error("Missing .loader element in HTML");
 
-// Initialize render helpers with element instances
 const ui = initRender({ gallery, loader, loadMoreButton });
+
+ui.createGallery(data.hits);
+ui.clearGallery();
+ui.showLoader();
+ui.hideLoader();
+ui.showLoadMoreButton();
+ui.hideLoadMoreButton();
+ui.showToast("message");
 
 searchForm.addEventListener("submit", onFormSubmit);
 loadMoreButton.addEventListener("click", onLoadMoreClick);
@@ -25,10 +32,9 @@ async function onFormSubmit(event: SubmitEvent) {
 
   const form = event.target as HTMLFormElement;
   const formData = new FormData(form);
-  const value = formData.get("search-text"); // FormDataEntryValue | null
+  const value = formData.get("search-text");
 
-  // value может быть null, приводим к string
-  query = value instanceof File ? "" : String(value).trim();
+  query = typeof value === "string" ? value.trim() : "";
 
   if (query === "") {
     ui.showToast("Please enter a search query.");
@@ -41,13 +47,14 @@ async function onFormSubmit(event: SubmitEvent) {
   await fetchAndRender();
   form.reset();
 }
-}
 
-async function onLoadMoreClick(_event: MouseEvent) {  pagination.next();
+async function onLoadMoreClick(_event: MouseEvent) {
+  pagination.next();
   await fetchAndRender();
 }
 
-async function fetchAndRender(): Promise<void> {  const isInitial = pagination.current === 1;
+async function fetchAndRender(): Promise<void> {
+  const isInitial = pagination.current === 1;
   try {
     ui.showLoader();
     ui.hideLoadMoreButton();
